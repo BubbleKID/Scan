@@ -25,15 +25,18 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.2.0'
-    compile 'com.android.support:design:25.2.0'
-    compile 'com.android.support:support-vector-drawable:25.2.0'
     // barcode scan
-    compile 'com.journeyapps:zxing-android-embedded:3.4.0'
-
-
+    //Loading
     // jsoup HTML parser library @ http://jsoup.org/
     compile files('libs/jsoup.jar')
 
+
+
+    compile 'com.android.support:appcompat-v7:25.2.0'
+    compile 'com.android.support:design:25.2.0'
+    compile 'com.android.support:support-vector-drawable:25.2.0'
+    compile 'com.journeyapps:zxing-android-embedded:3.4.0'
+    compile 'com.victor:lib:1.0.4'
+    compile 'com.android.support.constraint:constraint-layout:1.0.1'
     testCompile 'junit:junit:4.12'
 }

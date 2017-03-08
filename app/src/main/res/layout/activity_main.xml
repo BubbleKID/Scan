@@ -1,48 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.mark.scan.MainActivity"
-    android:baselineAligned="false"
-    android:orientation="vertical">
+    tools:layout_editor_absoluteY="81dp"
+    tools:layout_editor_absoluteX="0dp">
 
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_weight="0.00"
-        android:text="捷安达" />
+
+    <com.victor.loading.book.BookLoading
+        android:id="@+id/bookloading"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:layout_x="104dp"
+        android:layout_y="34dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteY="182dp" />
 
     <FrameLayout
         android:id="@+id/content"
-        android:layout_width="383dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.13">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView" />
-
-        <WebView
-            android:id="@+id/WebView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        tools:layout_editor_absoluteY="182dp"
+        tools:layout_editor_absoluteX="117dp">
 
     </FrameLayout>
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
         android:background="?android:attr/windowBackground"
-        app:menu="@menu/navigation" >
+        app:menu="@menu/navigation"
+        tools:layout_editor_absoluteY="587dp"
+        tools:layout_editor_absoluteX="1118dp">
 
     </android.support.design.widget.BottomNavigationView>
 
-</LinearLayout>
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="99dp"
+        android:layout_height="48dp"
+        android:text="捷安达"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="16dp"
+        app:layout_constraintHorizontal_bias="0.119" />
+
+    <WebView
+        android:id="@+id/WebView"
+        android:layout_width="386dp"
+        android:layout_height="385dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        tools:layout_editor_absoluteY="74dp">
+
+    </WebView>
+
+</android.support.constraint.ConstraintLayout>

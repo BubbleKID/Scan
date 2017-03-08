@@ -35,21 +35,12 @@ public class MainActivity extends AppCompatActivity {
     private String htmlPageUrl2 ="";
     private WebView parsedHtmlNode;
     private String htmlContentInStringFormat;
-
+    private com.victor.loading.book.BookLoading loding;
     private Elements newsHeadlines;
+    boolean ani;
 
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            String _code = data.getStringExtra("SCAN_RESULT");
-            JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
-            Log.d("codezhi",_code);
-            jsoupAsyncTask.execute( _code);
-        }
 
-    }
 
 
     @Override
@@ -65,11 +56,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
-                integrator.initiateScan();
+                loding= (com.victor.loading.book.BookLoading)findViewById(R.id.bookloading);
+                if(ani!=true)
+                {
+                    loding.start();
+                    ani=true;
+                }
+                else
+                {
+                    loding.stop();
+                    ani=false;
+                }
+
+                //IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
+                //integrator.initiateScan();
             }
         });
     }
+
 
 
     private class JsoupAsyncTask extends AsyncTask<String, String, Void> {
