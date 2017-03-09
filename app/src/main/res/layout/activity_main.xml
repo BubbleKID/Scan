@@ -1,65 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+
     tools:context="com.example.mark.scan.MainActivity"
     tools:layout_editor_absoluteY="81dp"
     tools:layout_editor_absoluteX="0dp">
 
 
-    <com.victor.loading.book.BookLoading
-        android:id="@+id/bookloading"
-        android:layout_width="150dp"
-        android:layout_height="100dp"
-        android:layout_x="104dp"
-        android:layout_y="34dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_editor_absoluteY="182dp" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
 
-    <FrameLayout
-        android:id="@+id/content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteY="182dp"
-        tools:layout_editor_absoluteX="117dp">
 
-    </FrameLayout>
+        <Button
+            android:id="@+id/button4"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:text="扫描条形码"
+            app:layout_constraintHorizontal_bias="0.119"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_alignBaseline="@+id/navigation"
+            android:layout_alignBottom="@+id/navigation"
+            android:layout_centerHorizontal="true" />
 
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/navigation"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
-        app:menu="@menu/navigation"
-        tools:layout_editor_absoluteY="587dp"
-        tools:layout_editor_absoluteX="1118dp">
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/navigation"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
 
-    </android.support.design.widget.BottomNavigationView>
+            android:background="?android:attr/windowBackground"
+            app:menu="@menu/navigation"
+            tools:layout_editor_absoluteX="1118dp"
+            tools:layout_editor_absoluteY="587dp">
 
-    <Button
-        android:id="@+id/button4"
-        android:layout_width="99dp"
-        android:layout_height="48dp"
-        android:text="捷安达"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="16dp"
-        app:layout_constraintHorizontal_bias="0.119" />
+        </android.support.design.widget.BottomNavigationView>
 
-    <WebView
-        android:id="@+id/WebView"
-        android:layout_width="386dp"
-        android:layout_height="385dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        tools:layout_editor_absoluteY="74dp">
 
-    </WebView>
 
-</android.support.constraint.ConstraintLayout>
+        <WebView
+            android:id="@+id/WebView"
+            android:layout_width="386dp"
+            android:layout_height="422dp"
+            android:layout_gravity="center_horizontal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            tools:layout_editor_absoluteY="74dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
+
+
+        </WebView>
+    </RelativeLayout>
+
+
+</RelativeLayout>
