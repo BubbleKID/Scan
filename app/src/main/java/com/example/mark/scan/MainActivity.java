@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
     private String htmlPageUrl2;
     private WebView parsedHtmlNode;
     private String htmlContentInStringFormat;
-    private com.victor.loading.book.BookLoading loding;
     private Elements newsHeadlines;
+    private Elements newsHeadlines2;
     boolean ani;
     private ProgressDialog pd;
 
@@ -154,6 +154,18 @@ public class MainActivity extends AppCompatActivity {
                     newsHeadlines = htmlDocument.select(".content");
                     htmlContentInStringFormat = htmlDocument.title();
                 }
+                else if(Courier.equals("polar"))
+                {
+                    htmlPageUrl2="http://www.polarexpress.com.au/track?num="+result[0];
+                    //htmlPageUrl2=htmlPageUrl+result[0];//"TYM137887";//result[0];  eg ：pe000383537bd
+                    htmlDocument = Jsoup.connect(htmlPageUrl2).get();
+                    newsHeadlines =   htmlDocument.select(".ft_tbody");
+                    newsHeadlines2 = htmlDocument.select(".row");
+
+                    //newsHeadlines =   newsHeadlines+     htmlDocument.select(".ft_tbody");
+
+                    htmlContentInStringFormat = htmlDocument.title();
+                }
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -182,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
             //parsedHtmlNode.loadUrl("http://www.google.com");
            // setTitle("Result");
 
-            parsedHtmlNode.loadData(newsHeadlines.html(), "text/html; charset=UTF-8",null);
+            parsedHtmlNode.loadData(newsHeadlines.html()+newsHeadlines2.html(), "text/html; charset=UTF-8",null);
         }
     }
 

@@ -58,15 +58,19 @@ public class MainActivity2 extends AppCompatActivity {
                         switch (position) {
                             case 0:
                                 Url="http://express.giantpost.com.au/q?s=";
-                                Courier="giant";
+                                Courier="giant"; //捷安达快递
                                 break;
                             case 1:
                                 Url="http://www.blueskyexpress.com.au/cgi-bin/GInfo.dll?EmmisTrack";
-                                Courier="blue";
+                                Courier="blue"; //蓝天快递
                                 break;
                             case 2:
                                 Url="http://120.25.248.148/cgi-bin/GInfo.dll?EmmisTrack";
-                                Courier="emms";
+                                Courier="emms";//顺丰快递
+                                break;
+                            case 3:
+                                Url="http://www.polarexpress.com.au/track?num=";
+                                Courier="polar"; //极地速递
                                 break;
                         }
 
