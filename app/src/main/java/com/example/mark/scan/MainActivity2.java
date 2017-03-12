@@ -1,5 +1,6 @@
 package com.example.mark.scan;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -49,6 +50,10 @@ public class MainActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
         GridView gridview = (GridView) findViewById(R.id.grid1);
 
+        //getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        //getSupportActionBar().setCustomView(R.layout.abs_layout);
+
+
         gridview.setAdapter(new ImageAdapter(this));
        // gridview.setAdapter();
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -59,18 +64,26 @@ public class MainActivity2 extends AppCompatActivity {
                             case 0:
                                 Url="http://express.giantpost.com.au/q?s=";
                                 Courier="giant"; //捷安达快递
+                                Toast.makeText(MainActivity2.this, "" + "捷安达快递",
+                                Toast.LENGTH_SHORT).show();
                                 break;
                             case 1:
                                 Url="http://www.blueskyexpress.com.au/cgi-bin/GInfo.dll?EmmisTrack";
                                 Courier="blue"; //蓝天快递
+                                Toast.makeText(MainActivity2.this, "" + "蓝天快递",
+                                        Toast.LENGTH_SHORT).show();
                                 break;
                             case 2:
                                 Url="http://120.25.248.148/cgi-bin/GInfo.dll?EmmisTrack";
                                 Courier="emms";//顺丰快递
+                                Toast.makeText(MainActivity2.this, "" + "顺丰快递",
+                                        Toast.LENGTH_SHORT).show();
                                 break;
                             case 3:
                                 Url="http://www.polarexpress.com.au/track?num=";
                                 Courier="polar"; //极地速递
+                                Toast.makeText(MainActivity2.this, "" + "极地速递",
+                                        Toast.LENGTH_SHORT).show();
                                 break;
                         }
 
@@ -87,8 +100,8 @@ public class MainActivity2 extends AppCompatActivity {
 
 
 
-                Toast.makeText(MainActivity2.this, "" + position,
-                        Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MainActivity2.this, "" + position,
+                        //Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(MainActivity2.this, MainActivity.class);
                 /* 通过Bundle对象存储需要传递的数据 */

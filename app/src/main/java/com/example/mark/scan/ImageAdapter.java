@@ -50,7 +50,7 @@ public class ImageAdapter  extends BaseAdapter {
 
     // references to our images
     private Integer[] mThumbIds = {
-            R.mipmap.jie , R.mipmap.lantian , R.mipmap.shunfeng,R.mipmap.jidi
+            R.mipmap.jieanda , R.mipmap.lantian , R.mipmap.shunfen,R.mipmap.jidi
             //R.drawable.sample_4, R.drawable.sample_5,
             //R.drawable.sample_6, R.drawable.sample_7,
             //R.drawable.sample_0, R.drawable.sample_1,

@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.app.ProgressDialog;
 import android.webkit.WebViewClient;
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         //alertDialog.show();
 
 
-        Button htmlTitleButton = (Button)findViewById(R.id.button4);
+        ImageButton htmlTitleButton = (ImageButton)findViewById(R.id.button4);
 
         htmlTitleButton.setOnClickListener(new View.OnClickListener() {
             @Override
