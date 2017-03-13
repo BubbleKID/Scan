@@ -6,6 +6,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher2"
         android:label="@string/app_name"
@@ -18,28 +19,34 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
             android:label="扫描条形码"
-            android:parentActivityName=".MainActivity2">>
+            android:parentActivityName=".MainActivity2">
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.mark.scan.MainActivity2"/>
-                <action android:name="android.intent.action.MAIN" />
+                android:value="com.example.mark.scan.MainActivity2" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
+            <action android:name="android.intent.action.MAIN" />
 
+            <category android:name="android.intent.category.LAUNCHER" />
         </activity>
         <activity android:name=".Main3Activity">
+            <action android:name="android.intent.action.MAIN" />
 
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-
+            <category android:name="android.intent.category.LAUNCHER" />
         </activity>
+        <activity
+            android:name=".MainActivity4"
+            android:label="@string/title_activity_main4" />
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>

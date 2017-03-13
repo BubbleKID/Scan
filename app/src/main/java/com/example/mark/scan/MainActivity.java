@@ -28,6 +28,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 
@@ -119,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
                         JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
                         Log.d("codezhi",_code);
                         jsoupAsyncTask.execute( _code);
+
                 }
 
         }
@@ -138,6 +140,8 @@ public class MainActivity extends AppCompatActivity {
                     htmlDocument = Jsoup.connect(htmlPageUrl2).get();
                     newsHeadlines = htmlDocument.select(".page-contents");
                     htmlContentInStringFormat = htmlDocument.title();
+
+                    //((MyApplication)getApplication()).setSomeVariable("");
                 }
                 else if(Courier.equals("blue"))
                 {
@@ -177,8 +181,6 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result) {
 
-
-
             final ProgressDialog pd = ProgressDialog.show(MainActivity.this, "", "Loading...",true);
            // parsedHtmlNode.    setText(newsHeadlines.html());
 
@@ -196,6 +198,8 @@ public class MainActivity extends AppCompatActivity {
            // setTitle("Result");
 
             parsedHtmlNode.loadData(newsHeadlines.html()+newsHeadlines2.html(), "text/html; charset=UTF-8",null);
+
+
         }
     }
 
