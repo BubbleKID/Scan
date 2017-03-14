@@ -54,15 +54,20 @@ public class MainActivity4 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main4);
-        initView2();
+       // initView2();
         ListView listView = (ListView) findViewById(R.id.listview);
 
         listItems = new ArrayList<String>();
         //listItems=MainActivity2
-        listItems = ((MyApplication) this.getApplication()).getSomeVariable();
+       // listItems.add(((MyApplication) this.getApplication()).getSomeVariable());
+        //listItems=((MyApplication) this.getApplication()).getSomeVariable();
 
-
-                //listItems.add("First Item - added on Activity Create");
+        listItems.add(0,"捷安达快递 MT000001 2017-3-14");
+        listItems.add(1,"捷安达快递 MT000002 2017-3-15");
+        listItems.add(2,"捷安达快递 MT000003 2017-3-16");
+        listItems.add(3,"捷安达快递 MT000003 2017-3-16");
+        listItems.add(4,"捷安达快递 MT000003 2017-3-16");
+        listItems.add(5,"First Item - added on Activity Create");
         adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_list_item_1, listItems);
         listView.setAdapter(adapter);
@@ -71,8 +76,8 @@ public class MainActivity4 extends AppCompatActivity {
         //navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
     }
-    private void initView2() {
-        BottomNavigationView bnv = (BottomNavigationView) findViewById(R.id.navigation2);
+    /*  private void initView2() {
+      BottomNavigationView bnv = (BottomNavigationView) findViewById(R.id.navigation2);
         //拿到默认选中的item
         //bnv.setSelected( true);
         MenuItem targetMenuItem =  bnv.getMenu().getItem(1);
@@ -107,6 +112,7 @@ public class MainActivity4 extends AppCompatActivity {
                 //return false;
             }
         });
-    }
 
+
+    }*/
 }

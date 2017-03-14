@@ -72,7 +72,7 @@ public class MainActivity2 extends AppCompatActivity {
 
         //getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         //getSupportActionBar().setCustomView(R.layout.abs_layout);
-        initView();
+        //initView();
 
         gridview.setAdapter(new ImageAdapter(this));
        // gridview.setAdapter();
@@ -137,8 +137,8 @@ public class MainActivity2 extends AppCompatActivity {
         });
     }
 
-    private void initView() {
-        BottomNavigationView bnv = (BottomNavigationView) findViewById(R.id.navigation1);
+   /* private void initView() {
+       BottomNavigationView bnv = (BottomNavigationView) findViewById(R.id.navigation1);
         //拿到默认选中的item
         lastItem = bnv.getMenu().getItem(0);
         //点击选择item
@@ -172,6 +172,6 @@ public class MainActivity2 extends AppCompatActivity {
                 return false;
             }
         });
-    }
 
+    }*/
 }
