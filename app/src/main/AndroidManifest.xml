@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity2"
+            android:name=".Home"
             android:label="猫本快递助手"
             android:theme="@style/AppTheme">
             <intent-filter>
@@ -24,13 +24,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ScanPage"
             android:label="扫描条形码"
-            android:parentActivityName=".MainActivity2">
+            android:parentActivityName=".Home">
             >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.mark.scan.MainActivity2" />
+                android:value="com.example.mark.scan.Home" />
 
             <action android:name="android.intent.action.MAIN" />
 

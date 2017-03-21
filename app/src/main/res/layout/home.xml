@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 
-    tools:context="com.example.mark.scan.MainActivity2">
+    tools:context="com.example.mark.scan.Home">
 
     <FrameLayout
         android:id="@+id/content"

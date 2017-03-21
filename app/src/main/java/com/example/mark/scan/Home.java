@@ -1,12 +1,8 @@
 package com.example.mark.scan;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Application;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -18,13 +14,9 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import android.database.sqlite.SQLiteOpenHelper;
-
 import java.util.ArrayList;
 
-import static android.R.attr.value;
-
-public class MainActivity2 extends AppCompatActivity {
+public class Home extends AppCompatActivity {
 
     private TextView mTextMessage;
     private String Url;
@@ -67,7 +59,7 @@ public class MainActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        setContentView(R.layout.home);
         GridView gridview = (GridView) findViewById(R.id.grid1);
 
         //getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
@@ -84,30 +76,30 @@ public class MainActivity2 extends AppCompatActivity {
                             case 0:
                                 Url="http://express.giantpost.com.au/q?s=";
                                 Courier="giant"; //捷安达快递
-                                Toast.makeText(MainActivity2.this, "" + "捷安达快递",
+                                Toast.makeText(Home.this, "" + "捷安达快递",
                                 Toast.LENGTH_SHORT).show();
                                 break;
                             case 1:
                                 Url="http://www.blueskyexpress.com.au/cgi-bin/GInfo.dll?EmmisTrack";
                                 Courier="blue"; //蓝天快递
-                                Toast.makeText(MainActivity2.this, "" + "蓝天快递",
+                                Toast.makeText(Home.this, "" + "蓝天快递",
                                         Toast.LENGTH_SHORT).show();
                                 break;
                             case 2:
                                 Url="http://120.25.248.148/cgi-bin/GInfo.dll?EmmisTrack";
                                 Courier="emms";//顺丰快递
-                                Toast.makeText(MainActivity2.this, "" + "顺丰快递",
+                                Toast.makeText(Home.this, "" + "顺丰快递",
                                         Toast.LENGTH_SHORT).show();
                                 break;
                             case 3:
                                 Url="http://www.polarexpress.com.au/track?num=";
                                 Courier="polar"; //极地速递
-                                Toast.makeText(MainActivity2.this, "" + "极地速递",
+                                Toast.makeText(Home.this, "" + "极地速递",
                                         Toast.LENGTH_SHORT).show();
                                 break;
                         }
 
-                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity2.this).create();
+                AlertDialog alertDialog = new AlertDialog.Builder(Home.this).create();
                 alertDialog.setTitle("Alert");
                 alertDialog.setMessage( Url);
                 alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
@@ -120,10 +112,10 @@ public class MainActivity2 extends AppCompatActivity {
 
 
 
-                //Toast.makeText(MainActivity2.this, "" + position,
+                //Toast.makeText(home.this, "" + position,
                         //Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(MainActivity2.this, MainActivity.class);
+                Intent intent = new Intent(Home.this, ScanPage.class);
                 /* 通过Bundle对象存储需要传递的数据 */
                 Bundle bundle = new Bundle();
                 /*字符、字符串、布尔、字节数组、浮点数等等，都可以传*/
@@ -150,21 +142,21 @@ public class MainActivity2 extends AppCompatActivity {
                     String title = item.getTitle().toString();
 
                     if (title.equals("主页")) {
-                        //Intent intent = new Intent(MainActivity2.this, MainActivity2.class);
+                        //Intent intent = new Intent(home.this, home.class);
                         //startActivity(intent);
-                        Toast.makeText(MainActivity2.this, title, Toast.LENGTH_LONG).show();
+                        Toast.makeText(home.this, title, Toast.LENGTH_LONG).show();
                     }
                     else if (title.equals("查询历史")) {
-                        Intent intent = new Intent(MainActivity2.this, MainActivity4.class);
+                        Intent intent = new Intent(home.this, MainActivity4.class);
                         startActivity(intent);
-                        Toast.makeText(MainActivity2.this, title, Toast.LENGTH_LONG).show();
+                        Toast.makeText(home.this, title, Toast.LENGTH_LONG).show();
                     }else if (title.equals("设置")) {
-                        Intent intent = new Intent(MainActivity2.this, SettingsActivity.class);
+                        Intent intent = new Intent(home.this, SettingsActivity.class);
                         startActivity(intent);
-                        Toast.makeText(MainActivity2.this, title, Toast.LENGTH_LONG).show();
+                        Toast.makeText(home.this, title, Toast.LENGTH_LONG).show();
                     }
 
-                    //Intent intent = new Intent(MainActivity2.this, MainActivity4.class);
+                    //Intent intent = new Intent(home.this, MainActivity4.class);
                     //startActivity(intent);
 
                     return true;

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
 
-    tools:context="com.example.mark.scan.MainActivity"
+    tools:context="com.example.mark.scan.ScanPage"
     tools:layout_editor_absoluteY="81dp"
     tools:layout_editor_absoluteX="0dp">
 
@@ -31,7 +31,19 @@
         android:layout_height="wrap_content"
         android:layout_x="184dp"
         android:layout_y="1dp"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        app:srcCompat="@android:drawable/ic_input_add"
+        android:text="this is text"
+        android:textColor="#FFFFFF"
+        />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_x="208dp"
+        android:layout_y="10dp"
+        android:text="Button"
+        />
 
     <WebView
         android:id="@+id/WebView"

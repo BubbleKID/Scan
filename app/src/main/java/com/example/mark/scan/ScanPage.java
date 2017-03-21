@@ -10,19 +10,12 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.ActionBarActivity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.TextView;
-import android.app.ProgressDialog;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
@@ -30,14 +23,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Hashtable;
 
 
@@ -52,12 +40,9 @@ import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Reader;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.MultiFormatReader.*;
 
 
-
-public class MainActivity extends AppCompatActivity {
+public class ScanPage extends AppCompatActivity {
 
     private Document htmlDocument;
     //private String htmlPageUrl = "http://express.giantpost.com.au/q?s=";
@@ -78,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private ProgressDialog pd;
     private ImageButton Scan;
 
+
     //initialize variables to make them global
 
     private static final int SELECT_PHOTO = 100;
@@ -88,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.scanpage);
         parsedHtmlNode = (WebView)findViewById(R.id.WebView);
         //parsedHtmlNode.getSettings().setJavaScriptEnabled(true);
         //parsedHtmlNode.getSettings().setSupportZoom(true);
@@ -100,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         htmlPageUrl = intent.getStringExtra("hpUrl");
         Courier = intent.getStringExtra("Courier");
 
-        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+        AlertDialog alertDialog = new AlertDialog.Builder(ScanPage.this).create();
         alertDialog.setTitle("Alert");
         alertDialog.setMessage(Courier);
         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
@@ -161,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                     ani=false;
                 }*/
 
-                //IntentIntegrator integrator = new IntentIntegrator(MainActivity.this);
+                //IntentIntegrator integrator = new IntentIntegrator(scanpage.this);
                 //integrator.initiateScan();
 
                 //htmlPageUrl2="http://express.giantpost.com.au/q?s=gt04831512AU";
@@ -271,7 +257,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result) {
 
-            final ProgressDialog pd = ProgressDialog.show(MainActivity.this, "", "Loading...",true);
+            final ProgressDialog pd = ProgressDialog.show(ScanPage.this, "", "Loading...",true);
            // parsedHtmlNode.    setText(newsHeadlines.html());
 
             parsedHtmlNode.setWebViewClient(new WebViewClient() {
@@ -311,28 +297,86 @@ public class MainActivity extends AppCompatActivity {
                     //doing some uri parsing
                     Uri selectedImage = imageReturnedIntent.getData();
 
+                    String imgPath =  selectedImage.getPath();
+
+                    AlertDialog alertDialog3 = new AlertDialog.Builder(ScanPage.this).create();
+                    alertDialog3.setTitle("Alert");
+                    alertDialog3.setMessage( imgPath );
+                    alertDialog3.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog3.show();
 
                     InputStream imageStream = null;
-                    try {
+                    try
+                    {
                         //getting the image
                         imageStream = getContentResolver().openInputStream(selectedImage);
-
-                        Log.d("resultCode1","resultCode1");
-                    } catch (FileNotFoundException e) {
+                    } catch (FileNotFoundException e)
+                    {
                         Toast.makeText(getApplicationContext(), "File not found", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
                     //decoding bitmap
-                    Bitmap bMap = BitmapFactory.decodeStream(imageStream);
+                    //Bitmap bMap = BitmapFactory.decodeStream(imageStream);
+
+                    //calculateInSampleSize(options, 1024, 1024);
+
+                    String path ="/external/images/media/17758";
+
+                    //bMap = decodeSampledBitmapFromFile(path, 720, 720);
+
+
+                    BitmapFactory.Options options = new BitmapFactory.Options();
+
+                    // First decode with inJustDecodeBounds=true to check dimensions
+
+                    options.inJustDecodeBounds = true;
+                   // BitmapFactory.decodeFile(imgPath, options);
+
+                    // Calculate inSampleSize
+                    options.inSampleSize = calculateInSampleSize(options, 2048, 2048);
+
+                    // Decode bitmap with inSampleSize set
+                    options.inJustDecodeBounds = false;
+                    //bMap = BitmapFactory.decodeFile(imgPath, options);
+                    Bitmap bMap = BitmapFactory.decodeStream(imageStream,null,options);
+
+
+
+
+
+/*
+                    // Scale down the bitmap if it is bigger than we need.
+                    int width = bMap.getWidth();
+                    int height = bMap.getHeight();
+                    final int targetWidth = 720, targetHeight = 720;
+                    if (width > targetWidth || height > targetHeight) {
+                        float scale = 0.0f;
+                        if (width >= height) {
+                            scale = (float) targetWidth / width;
+                        } else {
+                            scale = (float) targetHeight / height;
+                        }
+                        int w = Math.round(scale * width);
+                        int h = Math.round(scale * height);
+                        bMap = Bitmap.createScaledBitmap(bMap, w, h, true);
+                    }
+
+*/
                     //Scan.setImageURI(selectedImage);// To display selected image in image view
                     int[] intArray = new int[bMap.getWidth() * bMap.getHeight()];
                     // copy pixel data from the Bitmap into the 'intArray' array
-                    Log.d("resultCode2","resultCode2");
-                    bMap.getPixels(intArray, 0, bMap.getWidth(), 0, 0, bMap.getWidth(),
-                            bMap.getHeight());
 
-                    LuminanceSource source = new RGBLuminanceSource(bMap.getWidth(),
-                            bMap.getHeight(), intArray);
+                    bMap.getPixels(intArray, 0, bMap.getWidth(), 0, 0, bMap.getWidth(),bMap.getHeight());
+
+                   // http://iluhcm.com/2016/01/08/scan-qr-code-and-recognize-it-from-picture-fastly-using-zxing/
+
+
+                    LuminanceSource source = new RGBLuminanceSource(bMap.getWidth(),bMap.getHeight(),intArray);
                     BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
                     Log.d("resultCode3","resultCode3");
                     Reader reader = new MultiFormatReader();// use this otherwise
@@ -347,7 +391,7 @@ public class MainActivity extends AppCompatActivity {
                         //*I have created a global string variable by the name of barcode to easily manipulate data across the application*//
                         //barcode =  result.getText().toString();
                         Log.d("resultCode5","resultCode4");
-                        AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                        AlertDialog alertDialog = new AlertDialog.Builder(ScanPage.this).create();
                         alertDialog.setTitle("Alert");
                         alertDialog.setMessage(result.toString());
                         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
@@ -369,7 +413,7 @@ public class MainActivity extends AppCompatActivity {
                             alert1.setButton(DialogInterface.BUTTON_POSITIVE, "Done", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent i = new Intent (getBaseContext(),MainActivity.class);
+                                    Intent i = new Intent (getBaseContext(),scanpage.class);
                                     startActivity(i);
                                 }
                             });
@@ -386,7 +430,7 @@ public class MainActivity extends AppCompatActivity {
                             alert1.setButton(DialogInterface.BUTTON_POSITIVE, "Done", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    Intent i = new Intent (getBaseContext(),MainActivity.class);
+                                    Intent i = new Intent (getBaseContext(),scanpage.class);
                                     startActivity(i);
                                 }
                             });
@@ -398,21 +442,78 @@ public class MainActivity extends AppCompatActivity {
                         }
                         //the end of do something with the button statement.
 */
-                    } catch (NotFoundException e) {
-                        Toast.makeText(getApplicationContext(), "Nothing Found", Toast.LENGTH_SHORT).show();
+                    } catch (NotFoundException e)
+                    {
+                        Toast.makeText(getApplicationContext(), "未查询到条形码", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
-                    } catch (ChecksumException e) {
+                    } catch (ChecksumException e)
+                    {
                         Toast.makeText(getApplicationContext(), "Something weird happen, i was probably tired to solve this issue", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
-                    } catch (FormatException e) {
+                    } catch (FormatException e)
+                    {
                         Toast.makeText(getApplicationContext(), "Wrong Barcode/QR format", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
-                    } catch (NullPointerException e) {
+                    } catch (NullPointerException e)
+                    {
                         Toast.makeText(getApplicationContext(), "Something weird happen, i was probably tired to solve this issue", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
                 }
         }
+    }
+
+
+    /**
+     * 根据给定的宽度和高度动态计算图片压缩比率
+     *
+     * @param options Bitmap配置文件
+     * @param reqWidth 需要压缩到的宽度
+     * @param reqHeight 需要压缩到的高度
+     * @return 压缩比
+     */
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        // Raw height and width of image
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+            // height and width larger than the requested height and width.
+            while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
+
+    /**
+     * 将图片根据压缩比压缩成固定宽高的Bitmap，实际解析的图片大小可能和#reqWidth、#reqHeight不一样。
+     *
+     * @param imgPath 图片地址
+     * @param reqWidth 需要压缩到的宽度
+     * @param reqHeight 需要压缩到的高度
+     * @return Bitmap
+     */
+    public static Bitmap decodeSampledBitmapFromFile(String imgPath, int reqWidth, int reqHeight) {
+
+        // First decode with inJustDecodeBounds=true to check dimensions
+        final BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(imgPath, options);
+
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false;
+        return BitmapFactory.decodeFile(imgPath, options);
     }
 
 }

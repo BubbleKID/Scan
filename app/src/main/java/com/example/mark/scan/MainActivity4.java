@@ -58,7 +58,7 @@ public class MainActivity4 extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.listview);
 
         listItems = new ArrayList<String>();
-        //listItems=MainActivity2
+        //listItems=home
        // listItems.add(((MyApplication) this.getApplication()).getSomeVariable());
         //listItems=((MyApplication) this.getApplication()).getSomeVariable();
 
@@ -94,7 +94,7 @@ public class MainActivity4 extends AppCompatActivity {
                     String title = item.getTitle().toString();
 
                     if (title.equals("主页")) {
-                        Intent intent = new Intent(MainActivity4.this, MainActivity2.class);
+                        Intent intent = new Intent(MainActivity4.this, home.class);
                         startActivity(intent);
                         Toast.makeText(MainActivity4.this, title, Toast.LENGTH_LONG).show();
                     }
