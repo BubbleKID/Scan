@@ -97,6 +97,12 @@ public class Home extends AppCompatActivity {
                                 Toast.makeText(Home.this, "" + "极地速递",
                                         Toast.LENGTH_SHORT).show();
                                 break;
+                            case 4:
+                                Url="http://www.epspost.com/OrderQuery.asp?action=search&Ordernumber=";
+                                Courier="eps"; //联众快递
+                                Toast.makeText(Home.this, "" + "联众快递",
+                                        Toast.LENGTH_SHORT).show();
+                                break;
                         }
 
                 AlertDialog alertDialog = new AlertDialog.Builder(Home.this).create();

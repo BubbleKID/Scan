@@ -12,38 +12,37 @@
     tools:layout_editor_absoluteX="0dp">
 
 
-    <ImageButton
-        android:id="@+id/button4"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_x="7dp"
-        android:layout_y="2dp"
-        app:srcCompat="@android:drawable/ic_menu_camera" />
+        android:orientation="horizontal">
 
-    <ImageButton
-        android:id="@+id/imageButton1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_x="184dp"
-        android:layout_y="1dp"
-        app:srcCompat="@android:drawable/ic_input_add"
-        android:text="this is text"
-        android:textColor="#FFFFFF"
-        />
+        <ImageButton
+            android:id="@+id/button4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_weight="1"
+            android:layout_x="7dp"
+            android:layout_y="2dp"
+            app:srcCompat="@android:drawable/ic_menu_camera" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_x="208dp"
-        android:layout_y="10dp"
-        android:text="Button"
-        />
+        <ImageButton
+            android:id="@+id/imageButton1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_x="184dp"
+            android:layout_y="1dp"
+            android:text="this is text"
+            android:textColor="#FFFFFF"
+            app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+    </LinearLayout>
 
     <WebView
         android:id="@+id/WebView"

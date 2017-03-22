@@ -26,9 +26,19 @@ import org.jsoup.select.Elements;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.EnumMap;
+import java.util.EnumSet;
 import java.util.Hashtable;
+import java.util.Locale;
+import java.util.Map;
+import java.util.ResourceBundle;
+import java.util.logging.Logger;
 
 
+import com.google.zxing.BarcodeFormat;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.ChecksumException;
 import com.google.zxing.DecodeHintType;
@@ -38,8 +48,15 @@ import com.google.zxing.MultiFormatReader;
 import com.google.zxing.NotFoundException;
 import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Reader;
+import com.google.zxing.ReaderException;
 import com.google.zxing.Result;
+import com.google.zxing.common.GlobalHistogramBinarizer;
 import com.google.zxing.common.HybridBinarizer;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.multi.GenericMultipleBarcodeReader;
+import com.google.zxing.multi.MultipleBarcodeReader;
+
+import static com.example.mark.scan.R.layout.scanpage;
 
 
 public class ScanPage extends AppCompatActivity {
@@ -62,11 +79,12 @@ public class ScanPage extends AppCompatActivity {
     boolean ani;
     private ProgressDialog pd;
     private ImageButton Scan;
-
+    private static final Logger log = Logger.getLogger(ScanPage.class.getName());
 
     //initialize variables to make them global
 
     private static final int SELECT_PHOTO = 100;
+    private static final int CAPTURE_PHPTO = 2;
     //for easy manipulation of the result
     public String barcode;
 
@@ -74,18 +92,18 @@ public class ScanPage extends AppCompatActivity {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.scanpage);
+        setContentView(scanpage);
         parsedHtmlNode = (WebView)findViewById(R.id.WebView);
         //parsedHtmlNode.getSettings().setJavaScriptEnabled(true);
-        //parsedHtmlNode.getSettings().setSupportZoom(true);
-        //parsedHtmlNode.getSettings().setBuiltInZoomControls(true);
+        parsedHtmlNode.getSettings().setSupportZoom(true);
+        parsedHtmlNode.getSettings().setBuiltInZoomControls(true);
 
 
 
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         htmlPageUrl = intent.getStringExtra("hpUrl");
         Courier = intent.getStringExtra("Courier");
-
+/*
         AlertDialog alertDialog = new AlertDialog.Builder(ScanPage.this).create();
         alertDialog.setTitle("Alert");
         alertDialog.setMessage(Courier);
@@ -96,93 +114,54 @@ public class ScanPage extends AppCompatActivity {
                     }
                 });
         //alertDialog.show();
-
+*/
         ImageButton Scan = (ImageButton)findViewById(R.id.imageButton1);
-
         //set a new custom listener
         Scan.setOnClickListener(new View.OnClickListener() {
             @Override
                 public void onClick(View v)
                 {
-
-
                     Intent photoPic = new Intent(Intent.ACTION_PICK);
+                    //photoPic.setAction(Intent.ACTION_GET_CONTENT);
                     photoPic.setType("image/*");
                     startActivityForResult(photoPic, SELECT_PHOTO);
-
-
-
                 }
 
             });
 
-        //launch gallery via intent
-       // Intent photoPic = new Intent(Intent.ACTION_PICK);
-       // photoPic.setType("image/*");
-        //startActivityForResult(photoPic, SELECT_PHOTO);
-
-        //launch gallery via intent
-        //Intent photoPic = new Intent(Intent.ACTION_PICK);
-        //photoPic.setType("image/*");
-       // startActivityForResult(photoPic, SELECT_PHOTO);
-
-
-
         ImageButton htmlTitleButton = (ImageButton)findViewById(R.id.button4);
-
-
         htmlTitleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                IntentIntegrator integrator = new IntentIntegrator(ScanPage.this);
 
-               /* loding= (com.victor.loading.book.BookLoading)findViewById(R.id.bookloading);
-                if(ani!=true)
-                {
-                    loding.start();
-                    ani=true;
-                }
-                else
-                {
-                    loding.stop();
-                    ani=false;
-                }*/
-
-                //IntentIntegrator integrator = new IntentIntegrator(scanpage.this);
-                //integrator.initiateScan();
-
-                //htmlPageUrl2="http://express.giantpost.com.au/q?s=gt04831512AU";
+                Intent intent = integrator.createScanIntent();
+                startActivityForResult(intent,CAPTURE_PHPTO);
+                //integrator.initiateScan(); 旧方法
+               // htmlPageUrl2="http://express.giantpost.com.au/q?s=gt04831512AU";
             }
         });
     }
-   /* //do necessary coding for each ID
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.imageButton1:
-                //launch gallery via intent
-                Intent photoPic = new Intent(Intent.ACTION_PICK);
-                photoPic.setType("image/*");
-                startActivityForResult(photoPic, SELECT_PHOTO);
-                break;
-        }
-    }*/
+
         //@Override
         protected void onActivityResult2(int requestCode, int resultCode, Intent data)
         {
-                super.onActivityResult(requestCode, resultCode, data);
-                if (resultCode == RESULT_OK)
-                {
-                        String _code = data.getStringExtra("SCAN_RESULT");
-                        JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
-                        //Log.d("codezhi",_code);
-                        jsoupAsyncTask.execute( _code);
-
-                }
-
+            super.onActivityResult(requestCode, resultCode, data);
+            /*
+            AlertDialog alertDialog = new AlertDialog.Builder(ScanPage.this).create();
+            alertDialog.setTitle("Alert");
+            alertDialog.setMessage("123123");
+            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+            //alertDialog.show();*/
         }
+
     public static String scanQRImage(Bitmap bMap) {
         String contents = null;
-
         int[] intArray = new int[bMap.getWidth()*bMap.getHeight()];
         //copy pixel data from the Bitmap into the 'intArray' array
         bMap.getPixels(intArray, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
@@ -201,23 +180,33 @@ public class ScanPage extends AppCompatActivity {
         return contents;
     }
     private class JsoupAsyncTask extends AsyncTask<String, String, Void> {
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
-
         @Override
         protected Void doInBackground(String... result) {
-
             try {
                     if(Courier.equals("giant"))
                     {
+                      /*  AlertDialog alertDialog4 = new AlertDialog.Builder(ScanPage.this).create();
+                        alertDialog4.setTitle("Alert");
+                        alertDialog4.setMessage(Courier);
+                        alertDialog4.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog4.show();
+
+*/
                         htmlPageUrl2=htmlPageUrl+result[0];
                         //htmlPageUrl2="http://express.giantpost.com.au/q?s=gt04831512AU";
                         htmlDocument = Jsoup.connect(htmlPageUrl2).get();
                         newsHeadlines = htmlDocument.select(".page-contents");
                         htmlContentInStringFormat = htmlDocument.title();
+
                     }
                     else if(Courier.equals("blue"))
                     {
@@ -247,6 +236,17 @@ public class ScanPage extends AppCompatActivity {
 
                         htmlContentInStringFormat = htmlDocument.title();
                     }
+                    else if(Courier.equals("eps"))
+                    {
+                        htmlPageUrl2="http://www.epspost.com/OrderQuery.asp?action=search&Ordernumber="+result[0];
+                        //htmlPageUrl2="http://www.epspost.com/OrderQuery.asp?action=search&Ordernumber=EP1554000AU";
+                        //e.g   http://www.epspost.com/OrderQuery.asp?action=search&Ordernumber=EP1554000AU
+
+                        htmlDocument = Jsoup.connect(htmlPageUrl2).get();
+                        newsHeadlines =   htmlDocument.select(".rong");
+                        htmlContentInStringFormat = htmlDocument.title();
+
+                    }
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -257,23 +257,32 @@ public class ScanPage extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void result) {
 
-            final ProgressDialog pd = ProgressDialog.show(ScanPage.this, "", "Loading...",true);
+           // final ProgressDialog pd = ProgressDialog.show(ScanPage.this, "", "Loading...",true);
            // parsedHtmlNode.    setText(newsHeadlines.html());
-
+           /*
             parsedHtmlNode.setWebViewClient(new WebViewClient() {
                 @Override
                 public void onPageFinished(WebView view, String url) {
                     if(pd!=null && pd.isShowing())
-                    {
-                        //parsedHtmlNode.loadData(newsHeadlines.html(), "text/html; charset=UTF-8",null);
+                    {   //parsedHtmlNode.loadData(newsHeadlines.html(), "text/html; charset=UTF-8",null);
                         pd.dismiss();
                     }
                 }
-            });
+            });*/
+
+           if(!newsHeadlines.html().isEmpty())
+           {
+               parsedHtmlNode.loadData(newsHeadlines.html(), "text/html; charset=UTF-8",null);
+           }
+           else
+           {
+               parsedHtmlNode.loadData("未查询到结果", "text/html; charset=UTF-8",null);
+           }
+
             //parsedHtmlNode.loadUrl("http://www.google.com");
            // setTitle("Result");
-            parsedHtmlNode.loadData(newsHeadlines.html(), "text/html; charset=UTF-8",null);
-           // parsedHtmlNode.loadData(newsHeadlines.html()+newsHeadlines2.html(), "text/html; charset=UTF-8",null);
+
+            //parsedHtmlNode.loadData(newsHeadlines.html(), "text/html; charset=UTF-8",null);
 
 
         }
@@ -281,75 +290,42 @@ public class ScanPage extends AppCompatActivity {
 
     //call the onactivity result method
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
-
-
-
-
-
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent)
+    {
         super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
-
-
-
         switch (requestCode) {
             case SELECT_PHOTO:
                 if (resultCode == RESULT_OK) {
                     //doing some uri parsing
                     Uri selectedImage = imageReturnedIntent.getData();
-
-                    String imgPath =  selectedImage.getPath();
-
-                    AlertDialog alertDialog3 = new AlertDialog.Builder(ScanPage.this).create();
-                    alertDialog3.setTitle("Alert");
-                    alertDialog3.setMessage( imgPath );
-                    alertDialog3.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                            new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                }
-                            });
-                    alertDialog3.show();
-
+                    String imgPath = selectedImage.getPath();
                     InputStream imageStream = null;
-                    try
-                    {
+                    try {
                         //getting the image
                         imageStream = getContentResolver().openInputStream(selectedImage);
-                    } catch (FileNotFoundException e)
-                    {
+                    } catch (FileNotFoundException e) {
                         Toast.makeText(getApplicationContext(), "File not found", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
                     //decoding bitmap
                     //Bitmap bMap = BitmapFactory.decodeStream(imageStream);
-
                     //calculateInSampleSize(options, 1024, 1024);
-
-                    String path ="/external/images/media/17758";
-
+                    String path = "/external/images/media/17758";
                     //bMap = decodeSampledBitmapFromFile(path, 720, 720);
 
-
                     BitmapFactory.Options options = new BitmapFactory.Options();
-
                     // First decode with inJustDecodeBounds=true to check dimensions
 
                     options.inJustDecodeBounds = true;
-                   // BitmapFactory.decodeFile(imgPath, options);
-
+                    // BitmapFactory.decodeFile(imgPath, options);
                     // Calculate inSampleSize
-                    options.inSampleSize = calculateInSampleSize(options, 2048, 2048);
+                    options.inSampleSize = calculateInSampleSize(options, 1024, 1024);
 
                     // Decode bitmap with inSampleSize set
                     options.inJustDecodeBounds = false;
                     //bMap = BitmapFactory.decodeFile(imgPath, options);
-                    Bitmap bMap = BitmapFactory.decodeStream(imageStream,null,options);
+                    Bitmap bMap = BitmapFactory.decodeStream(imageStream, null, options);
 
-
-
-
-
-/*
                     // Scale down the bitmap if it is bigger than we need.
                     int width = bMap.getWidth();
                     int height = bMap.getHeight();
@@ -365,42 +341,45 @@ public class ScanPage extends AppCompatActivity {
                         int h = Math.round(scale * height);
                         bMap = Bitmap.createScaledBitmap(bMap, w, h, true);
                     }
-
-*/
                     //Scan.setImageURI(selectedImage);// To display selected image in image view
                     int[] intArray = new int[bMap.getWidth() * bMap.getHeight()];
                     // copy pixel data from the Bitmap into the 'intArray' array
 
-                    bMap.getPixels(intArray, 0, bMap.getWidth(), 0, 0, bMap.getWidth(),bMap.getHeight());
+                    bMap.getPixels(intArray, 0, bMap.getWidth(), 0, 0, bMap.getWidth(), bMap.getHeight());
 
-                   // http://iluhcm.com/2016/01/08/scan-qr-code-and-recognize-it-from-picture-fastly-using-zxing/
+                    // http://iluhcm.com/2016/01/08/scan-qr-code-and-recognize-it-from-picture-fastly-using-zxing/
 
-
-                    LuminanceSource source = new RGBLuminanceSource(bMap.getWidth(),bMap.getHeight(),intArray);
+                    LuminanceSource source = new RGBLuminanceSource(bMap.getWidth(), bMap.getHeight(), intArray);
                     BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));
-                    Log.d("resultCode3","resultCode3");
-                    Reader reader = new MultiFormatReader();// use this otherwise
-                    // ChecksumException
+                  // ChecksumException
                     try {
-                        Log.d("resultCode4","resultCode4");
+                        Reader reader = new MultiFormatReader();// use this otherwise
+                        ReaderException savedException = null;
+
                         Hashtable<DecodeHintType, Object> decodeHints = new Hashtable<DecodeHintType, Object>();
                         decodeHints.put(DecodeHintType.TRY_HARDER, Boolean.TRUE);
                         decodeHints.put(DecodeHintType.PURE_BARCODE, Boolean.TRUE);
+                        decodeHints.put(DecodeHintType.CHARACTER_SET, Boolean.TRUE);
                         //Result result = reader.decode(bitmap);
                         Result result = reader.decode(bitmap, decodeHints);
-                        //*I have created a global string variable by the name of barcode to easily manipulate data across the application*//
-                        //barcode =  result.getText().toString();
-                        Log.d("resultCode5","resultCode4");
-                        AlertDialog alertDialog = new AlertDialog.Builder(ScanPage.this).create();
-                        alertDialog.setTitle("Alert");
-                        alertDialog.setMessage(result.toString());
-                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        //*I have created a global string variable by the name of barcode to easily manipulate data across the application*/
+                    //barcode =  result.getText().toString();
+
+                        JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
+                        //Log.d("codezhi",_code);
+                        jsoupAsyncTask.execute(result.toString());
+
+                      /*
+                        AlertDialog alertDialog2 = new AlertDialog.Builder(ScanPage.this).create();
+                        alertDialog2.setTitle("Alert");
+                        alertDialog2.setMessage(result.toString());
+                        alertDialog2.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         dialog.dismiss();
                                     }
                                 });
-                        alertDialog.show();
+                        alertDialog2.show();*/
 /*
                         //do something with the results for demo i created a popup dialog
                         if(barcode!=null)
@@ -442,7 +421,7 @@ public class ScanPage extends AppCompatActivity {
                         }
                         //the end of do something with the button statement.
 */
-                    } catch (NotFoundException e)
+                   } catch (NotFoundException e)
                     {
                         Toast.makeText(getApplicationContext(), "未查询到条形码", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
@@ -460,6 +439,30 @@ public class ScanPage extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 }
+                //break;
+
+            case 2:
+                if (resultCode == RESULT_OK) {
+                    String _code =  imageReturnedIntent.getStringExtra("SCAN_RESULT");
+                    JsoupAsyncTask jsoupAsyncTask = new JsoupAsyncTask();
+                    //Log.d("codezhi",_code);
+                    jsoupAsyncTask.execute(_code);
+/*
+                    AlertDialog alertDialog = new AlertDialog.Builder(ScanPage.this).create();
+                    alertDialog.setTitle("Alert");
+                    alertDialog.setMessage(_code );
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                    */
+
+                }
+               //break;
+
         }
     }
 
@@ -515,7 +518,21 @@ public class ScanPage extends AppCompatActivity {
         options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFile(imgPath, options);
     }
+    /**
+     * Alert 消息提示功能
+     *
+
+     */
+    public void alert(String Message)
+    {
+
+
+    }
+
 
 }
+
+
+
 
 
